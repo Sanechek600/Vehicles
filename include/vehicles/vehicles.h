@@ -1,7 +1,7 @@
 #pragma once
-#include <cstring>
+#include <string>
 
-namespace Vehicles {
+namespace vehicles {
 	enum Type {
 		RAIL,
 		NAVAL,
@@ -10,7 +10,8 @@ namespace Vehicles {
 
 	enum AirEngType {
 		TURBOPROP,
-		JET
+		JET,
+		ERROR
 	};
 
 	class Vehicle {
@@ -19,23 +20,35 @@ namespace Vehicles {
 		std::string model;
 		float base_tariff;
 		float naval_range_mod;
-		float air_eng_type;
+		AirEngType air_eng_type;
 
 	public:
-		Type get_type() {
+		Type get_type() const {
 			return this->type;
 		}
-		std::string get_mod() {
+		std::string get_mod() const {
 			return this->model;
 		}
-		float get_bt() {
+		float get_bt() const {
 			return this->base_tariff;
 		}
-		float get_nrm() {
-			return this->naval_range_mod;
+		float get_nrm() const {
+			if (this->type == NAVAL) {
+				return this->naval_range_mod;
+			}
+			else {
+				return 1;
+			}
+			
 		}
-		float get_aet() {
-			return this->air_eng_type;
+		AirEngType get_aet() const {
+			if (this->type == AIR) {
+				return this->air_eng_type;
+			}
+			else {
+				return ERROR;
+			}
+			
 		}
 
 		void set_type(Type t) {
@@ -52,54 +65,44 @@ namespace Vehicles {
 				this->naval_range_mod = nrm;
 			}
 		}
-		void set_aet(float aet) {
+		void set_aet(AirEngType aet) {
 			if (this->type == AIR) {
 				this->air_eng_type = aet;
 			}
 		}
 
-		Vehicle() {
-			this->type = Type::RAIL;
-			this->model = "ZPM";
-			this->base_tariff = 1000;
-			this->naval_range_mod = 1;
-			this->air_eng_type = JET;
-		}
+		Vehicle();
 
-		Vehicle(Type t, char* model, float bt, float nrm, float aet) {
-			this->type = t;
-			this->model = model;
-			this->base_tariff = bt;
-			if (this->type == NAVAL && nrm > 0.9 && nrm < 1) {
-				this->naval_range_mod = nrm;
-			}
-			else {
-				this->naval_range_mod = 1;
-			}
-			if (this->type == AIR) {
-				this->air_eng_type = aet;
-			}
-			else {
-				this->air_eng_type = JET;
-			}
-		}
+		Vehicle(Type t, std::string model, float bt);
 
-		float cost(float mass, float distance);
+		Vehicle(Type t, std::string model, float bt, float nrm);
+
+		Vehicle(Type t, std::string model, float bt, AirEngType aet);
+
+		Vehicle(Type t, std::string model, float bt, float nrm, AirEngType aet);
+
+		float cost(const float mass, const float distance);
+
 	};
+
+	bool operator==(const Vehicle& lv, const Vehicle& rv);
+	bool operator!=(const Vehicle& lv, const Vehicle& rv);
 
 	class VehicleList {
 	public:
-		static const int CAP = 10;
+		static const int CAP = 127;
 	private:
 		Vehicle _vehicles[CAP];
 		int _size;
 	public:
 		VehicleList();
+		Vehicle operator[](int index) const;
 		int get_size();
+		void add(Vehicle v);
 		void insert(int index, Vehicle v);
 		void remove(int index);
 	};
-
+	int search_min_cost(const VehicleList vl, const float mass, const float distance);
 }
 
 

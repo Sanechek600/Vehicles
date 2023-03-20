@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(functions CXX)
+project(vehicles CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -18,8 +18,11 @@ if(MSVC)
 endif()
 
 # Объявляем библиотеку
-add_library(functions SHARED "include/vehicles/vehicles.h" "src/vehicles.cc")
-target_include_directories(functions PUBLIC "include")
+add_library(vehicles SHARED 
+"include/vehicles/vehicles.h" 
+"src/vehicles.cc"
+"src/vehicles_list.cc")
+target_include_directories(vehicles PUBLIC "include")
 
 # Подключаем googletest
 include(FetchContent)
