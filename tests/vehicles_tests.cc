@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 #include <vehicles/vehicles.h>
 #include <string>
+#include <stdexcept>
 
 using namespace vehicles;
+using namespace std;
 
 TEST(VehicleTests, GetterTest1) {
     // Arrange
@@ -27,6 +29,14 @@ TEST(VehicleTests, GetterTest1) {
     EXPECT_NEAR(bt, 1.0, 0.001);
     EXPECT_NEAR(nrm, 0.95, 0.001);
     EXPECT_EQ(aet, ERROR);
+}
+
+TEST(VeicleTests, ExceptionTest) {
+    Vehicle v1(BOOM, "TRAINE", 1, TURBOPROP);
+    EXPECT_ANY_THROW(float cost = v1.cost(20, 10000););
+   
+
+    
 }
 
 TEST(VehicleTests, CostTest_NAVAL) {
