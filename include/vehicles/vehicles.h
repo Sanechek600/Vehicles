@@ -1,32 +1,31 @@
 #pragma once
 #include <string>
 #include <algorithm>
+#include <iostream>
 #define ListPtr Vehicle*
 
-namespace vehicles {
-	enum Type {
-		RAIL,
-		NAVAL,
-		AIR,
-		BOOM
+	enum VehicleType {
+		RAIL = 0,
+		NAVAL = 1,
+		AIR = 2,
+		BOOM = 3
 	};
 
 	enum AirEngType {
-		TURBOPROP,
-		JET,
-		ERROR
+		TURBOPROP = 0,
+		JET = 1
 	};
 
 	class Vehicle {
 	private:
-		Type _type;
+		VehicleType _type;
 		std::string _model;
 		float _base_tariff;
 		float _naval_range_mod;
 		AirEngType _air_eng_type;
 
 	public:
-		Type get_type() const {
+		VehicleType get_type() const {
 			return this->_type;
 		}
 		std::string get_mod() const {
@@ -49,12 +48,12 @@ namespace vehicles {
 				return this->_air_eng_type;
 			}
 			else {
-				return ERROR;
+				return JET;
 			}
 			
 		}
 
-		void set_type(Type t) {
+		void set_type(VehicleType t) {
 			this->_type = t;
 		}
 		void set_mod(std::string m) {
@@ -75,10 +74,10 @@ namespace vehicles {
 		}
 
 		Vehicle();
-		Vehicle(Type t, std::string model, float bt);
-		Vehicle(Type t, std::string model, float bt, float nrm);
-		Vehicle(Type t, std::string model, float bt, AirEngType aet);
-		Vehicle(Type t, std::string model, float bt, float nrm, AirEngType aet);
+		Vehicle(VehicleType t, std::string model, float bt);
+		Vehicle(VehicleType t, std::string model, float bt, float nrm);
+		Vehicle(VehicleType t, std::string model, float bt, AirEngType aet);
+		Vehicle(VehicleType t, std::string model, float bt, float nrm, AirEngType aet);
 		Vehicle(const Vehicle& v);
 
 		float cost(const float mass, const float distance);
@@ -103,7 +102,7 @@ namespace vehicles {
 		VehicleList(const VehicleList& pther);
 		~VehicleList();
 
-		ListPtr get_by_index(int i);
+		ListPtr at(int i);
 		int get_size();
 		void set_size(size_t size);
 
@@ -120,8 +119,9 @@ namespace vehicles {
 		void print_current(int index);
 		void show_all();
 		void Swap(VehicleList& other) noexcept;
+		int search_min_cost(const float mass, const float distance);
 	};
-	int search_min_cost(const VehicleList vl, const float mass, const float distance);
-}
+
+
 
 

@@ -21,7 +21,8 @@ endif()
 add_library(vehicles SHARED 
 "include/vehicles/vehicles.h" 
 "src/vehicles.cc"
-"src/vehicles_list.cc")
+"src/vehicles_list.cc"
+"src/console.cc")
 target_include_directories(vehicles PUBLIC "include")
 
 # Подключаем googletest
@@ -33,3 +34,6 @@ FetchContent_MakeAvailable(googletest)
 # Объявляем тесты
 add_executable(vehicles_tests "tests/vehicles_tests.cc")
 target_link_libraries(vehicles_tests vehicles GTest::gtest_main)
+
+add_executable(console "src/console.cc")
+target_link_libraries(console vehicles)

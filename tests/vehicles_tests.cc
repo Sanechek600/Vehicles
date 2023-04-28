@@ -3,7 +3,6 @@
 #include <string>
 #include <stdexcept>
 
-using namespace vehicles;
 using namespace std;
 
 TEST(VehicleTests, GetterTest1) {
@@ -16,7 +15,7 @@ TEST(VehicleTests, GetterTest1) {
     v1.set_aet(JET);
     
     // Act
-    Type t = v1.get_type();
+    VehicleType t = v1.get_type();
     std::string s = v1.get_mod();
     float bt = v1.get_bt();
     float nrm = v1.get_nrm();
@@ -28,7 +27,6 @@ TEST(VehicleTests, GetterTest1) {
     EXPECT_EQ(s, "BOAT");
     EXPECT_NEAR(bt, 1.0, 0.001);
     EXPECT_NEAR(nrm, 0.95, 0.001);
-    EXPECT_EQ(aet, ERROR);
 }
 
 TEST(VeicleTests, ExceptionTest) {
@@ -180,7 +178,7 @@ TEST(VehicleTests, ListTest_SEARCH) {
     VL.add(plane1);
     VL.add(boat1);
 
-    int mi = search_min_cost(VL, 20, 10000);
+    int mi = VL.search_min_cost(20, 10000);
 
     EXPECT_EQ(mi, 2);
 }

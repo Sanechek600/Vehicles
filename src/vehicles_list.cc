@@ -1,8 +1,8 @@
 #include <vehicles/vehicles.h>
 #include <stdexcept>
 #include <utility>
+#include <iostream>
 
-using namespace vehicles;
 using namespace std;
 
 //Constructor/Destructor block
@@ -50,16 +50,15 @@ VehicleList::~VehicleList() {
 int VehicleList::get_size() {
 	return _size;
 }
+ListPtr VehicleList::at(int index) {
+    return  _vehicles[index];
+}
+void VehicleList::set_size(size_t size) {
+    _size = size;
+}
 
 //Operators and utilities
-ListPtr VehicleList::operator[](int index) const {
-    if (index < 0 || _size <= index) {
-        throw out_of_range("[VehicleList::operator[]] Index is out of range.");
-    }
-
-    return _vehicles[index];
-}
-bool vehicles::operator==(const VehicleList& list, const VehicleList& other) {
+bool operator==(const VehicleList& list, const VehicleList& other) {
     return (list._size == other._size && **(list._vehicles) == **(other._vehicles));
 }
 bool operator!=(const VehicleList& list, const VehicleList& other) {
@@ -90,6 +89,8 @@ void VehicleList::Swap(VehicleList& other) {
     swap(_size, other._size);
 }
 
+
+//Adding/deleting items
 void VehicleList::add(const Vehicle v) {
     _vehicles[_size] = new Vehicle(v);
     ++_size;
@@ -118,14 +119,32 @@ void VehicleList::remove(int index) {
     --_size;
 }
 
+void VehicleList::clear() {
+    _vehicles = nullptr;
+    _size = 0;
+}
 
 
-int vehicles::search_min_cost(VehicleList vl, float mass, float distance){
+//Console stuff
+void VehicleList::print_current(int index) {
+    cout << *_vehicles[index];
+}
+void VehicleList::show_all() {
+    cout << "All vehicles on the list:\n";
+    for (int i = 0; i < _size; ++i) {
+        cout << i << ':';
+        print_current(i);
+        cout << endl;
+    }
+}
+
+
+int VehicleList::search_min_cost(float mass, float distance){
     float mc = 1000000000;
-    int mi = 10000;
-    for (int i = 0; i < vl.get_size(); i++) {
-        if (vl[i].cost(mass, distance) < mc) {
-            mc = vl[i].cost(mass, distance);
+    int mi = 0;
+    for (int i = 0; i < _size; i++) {
+        if (_vehicles[i]->cost(mass, distance) < mc) {
+            mc = _vehicles[i]->cost(mass, distance);
             mi = i;
         }
     }
