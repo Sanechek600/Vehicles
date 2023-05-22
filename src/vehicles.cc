@@ -12,13 +12,13 @@ Vehicle::Vehicle() {
 	this->_model = "ZPM";
 	this->_base_tariff = 1;
 	this->_naval_range_mod = 1;
-	this->_air_eng_type = ERROR;
+	this->_air_eng_type = ERRO;
 }
 Vehicle::Vehicle(VehicleType t, std::string model, float bt) {
 	this->_type = t;
 	this->_model = model;
 	this->_base_tariff = bt;
-	this->_air_eng_type = ERROR;
+	this->_air_eng_type = ERRO;
 	this->_naval_range_mod = 1;
 }
 Vehicle::Vehicle(VehicleType t, std::string model, float bt, float nrm) {
@@ -31,7 +31,7 @@ Vehicle::Vehicle(VehicleType t, std::string model, float bt, float nrm) {
 	else {
 		this->_naval_range_mod = 1;
 	}
-	this->_air_eng_type = ERROR;
+	this->_air_eng_type = ERRO;
 }
 Vehicle::Vehicle(VehicleType t, std::string model, float bt, AirEngType aet) {
 	this->_type = t;
@@ -42,7 +42,7 @@ Vehicle::Vehicle(VehicleType t, std::string model, float bt, AirEngType aet) {
 		this->_air_eng_type = aet;
 	}
 	else {
-		this->_air_eng_type = ERROR;
+		this->_air_eng_type = ERRO;
 	}
 }
 Vehicle::Vehicle(VehicleType t, std::string model, float bt, float nrm, AirEngType aet) {
@@ -59,15 +59,15 @@ Vehicle::Vehicle(VehicleType t, std::string model, float bt, float nrm, AirEngTy
 		this->_air_eng_type = aet;
 	}
 	else {
-		this->_air_eng_type = ERROR;
+		this->_air_eng_type = ERRO;
 	}
 }
 Vehicle::Vehicle(const Vehicle& v) {
-	_type = v.get_type();
-	_model = v.get_mod();
-	_base_tariff = v.get_bt();
-	_naval_range_mod = v.get_nrm();
-	_air_eng_type = v.get_aet();
+	_type = v._type;
+	_model = v._model;
+	_base_tariff = v._base_tariff;
+	_naval_range_mod = v._naval_range_mod;
+	_air_eng_type = v._air_eng_type;
 }
 
 bool operator==(const Vehicle& item, const Vehicle& other) {
@@ -84,30 +84,10 @@ Vehicle& Vehicle::operator=(Vehicle other) {
 	Swap(other);
 	return *this;
 }
-istream& operator>>(std::istream& in, VehicleType& item_type) {
-	int type;
-	in >> type;
-	switch (type) {
-	case 0:
-		item_type = RAIL;
-		break;
-	case 1:
-		item_type = NAVAL;
-		break;
-	case 2:
-		item_type = AIR;
-		break;
-	case 3:
-		item_type = BOOM;
-		break;
-	default:
-		throw std::runtime_error("Wrong type exception");
-	}
-	return in;
-}
 
 
-void Vehicle::Swap(Vehicle& other) {
+
+void Vehicle::Swap(Vehicle& other) noexcept {
 	swap(_type, other._type);
 	swap(_base_tariff, other._base_tariff);
 	swap(_model, other._model);
@@ -154,10 +134,13 @@ istream& operator>>(std::istream& in, VehicleType& item_type) {
 		item_type = RAIL;
 		break;
 	case 1:
-		item_type = AIR;
+		item_type = NAVAL;
 		break;
 	case 2:
-		item_type = NAVAL;
+		item_type = AIR;
+		break;
+	case 3:
+		item_type = BOOM;
 		break;
 	default:
 		throw std::runtime_error("Wrong type exception");
@@ -204,9 +187,8 @@ string string_engine_type(AirEngType type) {
 	return "";
 }
 istream& operator>>(istream& in, Vehicle& item) {
-	cout << "Enter vehicle type (0-Rail, 1-Air, 2-Naval):  ";
+	cout << "Enter vehicle type (0-Rail, 1-Naval, 2-Air):  ";
 	in >> item._type;
-	in >> item._air_eng_type;
 	switch (item._type) {
 	case RAIL:
 		cout << "Enter model:  ";
@@ -222,10 +204,18 @@ istream& operator>>(istream& in, Vehicle& item) {
 		cout << "Enter engine type (0-Turboprop, 1-Jet):  ";
 		in >> item._air_eng_type;
 		return in;
+	case NAVAL:
+		cout << "Enter model:  ";
+		in >> item._model;
+		cout << "Enter base tariff:  ";
+		in >> item._base_tariff;
+		cout << "Enter range mod (0.9 -- 1.0):  ";
+		in >> item._naval_range_mod;
+		return in;
 	}
 }
 ostream& operator<<(ostream& out, const Vehicle& item) {
-	switch (item._type) {
+	switch (item.get_type()) {
 	case RAIL:
 		return out << "Rail(" << item._model << ", " << item._base_tariff << ")" << endl;
 	case AIR:

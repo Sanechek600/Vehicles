@@ -6,7 +6,12 @@
 using namespace std;
 
 //Constructor/Destructor block
-VehicleList::VehicleList() : _size(0) {}
+VehicleList::VehicleList() : _size(3) { 
+    _vehicles = new Vehicle * [_size];
+    _vehicles[0] = new Vehicle(RAIL, "Traine", 10);
+    _vehicles[1] = new Vehicle(AIR, "Plaine", 10, JET);
+    _vehicles[2] = new Vehicle(NAVAL, "Sheap", 10, 0.95);
+}
 VehicleList::VehicleList(ListPtr* vehicles, size_t size) {
     _size = size;
 
@@ -84,7 +89,7 @@ ListPtr& VehicleList::operator[](int index)
     return _vehicles[index];
 }
 
-void VehicleList::Swap(VehicleList& other) {
+void VehicleList::Swap(VehicleList& other) noexcept {
     swap(_vehicles, other._vehicles);
     swap(_size, other._size);
 }
@@ -102,12 +107,12 @@ void VehicleList::insert(int index, const Vehicle v) {
     }
     ++_size;
     ListPtr* vehicles = new Vehicle * [_size];
-    for (int i = _size; i > index; i--) {
-        vehicles[i] = new Vehicle(*this->_vehicles[i]);
-    }
-    vehicles[index] = new Vehicle(v);
     for (int i = _size - 1; i > index; --i) {
         vehicles[i] = new Vehicle(*this->_vehicles[i - 1]);
+    }
+    vehicles[index] = new Vehicle(v);
+    for (int i = index - 1; i >= 0; --i) {
+        vehicles[i] = new Vehicle(*this->_vehicles[i]);
     }
     swap(this->_vehicles, vehicles);
 }

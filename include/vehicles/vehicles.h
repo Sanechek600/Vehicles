@@ -4,6 +4,8 @@
 #include <iostream>
 #define ListPtr Vehicle*
 
+using namespace std;
+
 	enum VehicleType {
 		RAIL = 0,
 		NAVAL = 1,
@@ -13,7 +15,8 @@
 
 	enum AirEngType {
 		TURBOPROP = 0,
-		JET = 1
+		JET = 1,
+		ERRO = 2
 	};
 
 	class Vehicle {
@@ -26,17 +29,17 @@
 
 	public:
 		VehicleType get_type() const {
-			return this->_type;
+			return _type;
 		}
 		std::string get_mod() const {
-			return this->_model;
+			return _model;
 		}
 		float get_bt() const {
-			return this->_base_tariff;
+			return _base_tariff;
 		}
 		float get_nrm() const {
-			if (this->_type == NAVAL) {
-				return this->_naval_range_mod;
+			if (_type == NAVAL) {
+				return _naval_range_mod;
 			}
 			else {
 				return 1;
@@ -44,8 +47,8 @@
 			
 		}
 		AirEngType get_aet() const {
-			if (this->_type == AIR) {
-				return this->_air_eng_type;
+			if (_type == AIR) {
+				return _air_eng_type;
 			}
 			else {
 				return JET;
@@ -54,22 +57,22 @@
 		}
 
 		void set_type(VehicleType t) {
-			this->_type = t;
+			_type = t;
 		}
 		void set_mod(std::string m) {
-			this->_model = m;
+			_model = m;
 		}
 		void set_bt(float bt) {
-			this->_base_tariff = bt;
+			_base_tariff = bt;
 		}
 		void set_nrm(float nrm) {
-			if (this->_type == NAVAL) {
-				this->_naval_range_mod = nrm;
+			if (_type == NAVAL) {
+				_naval_range_mod = nrm;
 			}
 		}
 		void set_aet(AirEngType aet) {
-			if (this->_type == AIR) {
-				this->_air_eng_type = aet;
+			if (_type == AIR) {
+				_air_eng_type = aet;
 			}
 		}
 
@@ -84,10 +87,13 @@
 
 		void Swap(Vehicle& other) noexcept;
 		Vehicle& operator=(Vehicle other);
+
 		friend istream& operator>>(istream& in, Vehicle& item);
 		friend ostream& operator<<(ostream& out, const Vehicle& item);
 
 	};
+
+	
 
 	bool operator==(const Vehicle& lv, const Vehicle& rv);
 	bool operator!=(const Vehicle& lv, const Vehicle& rv);

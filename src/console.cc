@@ -26,6 +26,8 @@ int main() {
 	while (input != 6) {
 		menu();
 		cin >> input;
+		float dist = 0;
+		float mass = 0;
 		switch (input) {
 		case 1:
 			system("cls");
@@ -49,22 +51,18 @@ int main() {
 		case 4:
 			system("cls");
 			VL.show_all();
-			float dist = 0;
-			float mass = 0;
 			cout << "Distance (km): ";
 			cin >> dist;
 			cout << "Mass of cargo (kg): ";
 			cin >> mass;
 			idx = VL.search_min_cost(mass, dist);
-			cout << "Vehicle with minimal tranportation cost: " << VL.at(idx) << endl;
+			cout << "Vehicle with minimal tranportation cost: " << VL.at(idx)->get_mod() << endl;
 			break;
 		case 5:
 			system("cls");
 			VL.show_all();
 			cout << "Index of needed vehicle: ";
 			cin >> idx;
-			float dist = 0;
-			float mass = 0;
 			cout << "Distance (km): ";
 			cin >> dist;
 			cout << "Mass of cargo (kg): ";

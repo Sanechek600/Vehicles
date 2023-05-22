@@ -21,8 +21,7 @@ endif()
 add_library(vehicles SHARED 
 "include/vehicles/vehicles.h" 
 "src/vehicles.cc"
-"src/vehicles_list.cc"
-"src/console.cc")
+"src/vehicles_list.cc")
 target_include_directories(vehicles PUBLIC "include")
 
 # Подключаем googletest
