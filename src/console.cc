@@ -6,12 +6,12 @@
 
 using namespace std;
 
-void menu() {
+void menu(VehicleList VL) {
 	system("cls");
-	cout << "Welcome, please, choose from 1 to 6" << endl;
+	VL.show_all();
 	cout << "1 - Insert an element into the list at the specified index" << endl;
 	cout << "2 - Remove an element from the list at the specified index" << endl;
-	cout << "3 - Show the vehicle list" << endl;
+	cout << "3 - Add an element" << endl;
 	cout << "4 - Search for a vehicle with minimal cost of transportation" << endl;
 	cout << "5 - View tranportation costs" << endl;
 	cout << "6 - End session" << endl;
@@ -24,7 +24,7 @@ int main() {
 	int input = 0;
 	int idx;
 	while (input != 6) {
-		menu();
+		menu(VL);
 		cin >> input;
 		float dist = 0;
 		float mass = 0;
@@ -47,6 +47,8 @@ int main() {
 		case 3:
 			system("cls");
 			VL.show_all();
+			cin >> item;
+			VL.add(item);
 			break;
 		case 4:
 			system("cls");

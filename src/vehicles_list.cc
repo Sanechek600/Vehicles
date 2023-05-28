@@ -97,13 +97,18 @@ void VehicleList::Swap(VehicleList& other) noexcept {
 
 //Adding/deleting items
 void VehicleList::add(const Vehicle v) {
-    _vehicles[_size] = new Vehicle(v);
     ++_size;
+    ListPtr* vehicles = new Vehicle * [_size];
+    for (int i = 0; i < _size - 1; i++) {
+        vehicles[i] = new Vehicle(*this->_vehicles[i]);
+    }
+    vehicles[_size - 1] = new Vehicle(v);
+    swap(this->_vehicles, vehicles);
 }
 
 void VehicleList::insert(int index, const Vehicle v) {
     if (index<0 || index>_size) {
-        throw runtime_error("[VehicleList::add] Index out of range.");
+        throw runtime_error("[VehicleList::insert] Index out of range.");
     }
     ++_size;
     ListPtr* vehicles = new Vehicle * [_size];
