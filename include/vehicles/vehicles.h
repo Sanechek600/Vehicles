@@ -82,6 +82,7 @@ using namespace std;
 		Vehicle(VehicleType t, std::string model, float bt, AirEngType aet);
 		Vehicle(VehicleType t, std::string model, float bt, float nrm, AirEngType aet);
 		Vehicle(const Vehicle& v);
+		~Vehicle() = default;
 
 		float cost(const float mass, const float distance);
 
